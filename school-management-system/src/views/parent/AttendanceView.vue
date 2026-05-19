@@ -2,7 +2,7 @@
   <div class="space-y-6">
     <h2 class="page-title">Alice's Attendance Record</h2>
 
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="stat-card">
         <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center"><span class="text-lg font-bold text-green-600">{{ presentCount }}</span></div>
         <div><p class="text-xs text-gray-500">Days Present</p><p class="font-semibold text-gray-900">This Term</p></div>
@@ -22,6 +22,7 @@
     </div>
 
     <div class="card p-0 overflow-hidden">
+      <div class="overflow-x-auto">
       <table class="w-full">
         <thead class="bg-gray-50 border-b border-gray-200">
           <tr>
@@ -41,6 +42,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
   </div>
 </template>

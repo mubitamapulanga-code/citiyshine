@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <h2 class="page-title">Messages</h2>
-      <button @click="showCompose = true" class="btn-primary text-sm flex items-center gap-2">
+      <button @click="showCompose = true" class="btn-primary text-sm flex items-center gap-2 self-start sm:self-auto">
         <IconPlus class="w-4 h-4" /> New Message
       </button>
     </div>

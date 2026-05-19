@@ -3,7 +3,7 @@
     <h2 class="page-title">My Grades</h2>
 
     <!-- GPA card -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="stat-card">
         <div class="w-12 h-12 bg-amber-50 rounded-xl flex items-center justify-center">
           <span class="text-xl font-bold text-amber-600">3.8</span>
@@ -31,6 +31,7 @@
     </div>
 
     <div class="card p-0 overflow-hidden">
+      <div class="overflow-x-auto">
       <table class="w-full">
         <thead class="bg-gray-50 border-b border-gray-200">
           <tr>
@@ -63,6 +64,7 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
   </div>
 </template>

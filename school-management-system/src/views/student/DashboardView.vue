@@ -3,7 +3,7 @@
     <div class="bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl p-6 text-white">
       <h2 class="text-2xl font-bold">Hello, Alice!</h2>
       <p class="text-amber-100 mt-1">Grade 10A · Student ID: STU001</p>
-      <div class="flex gap-4 mt-4">
+      <div class="flex flex-wrap gap-3 mt-4">
         <div class="bg-white/20 rounded-xl px-4 py-2 text-center">
           <p class="text-2xl font-bold">3.8</p>
           <p class="text-xs text-amber-100">Current GPA</p>

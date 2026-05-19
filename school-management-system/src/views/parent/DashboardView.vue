@@ -3,7 +3,7 @@
     <div class="bg-gradient-to-r from-rose-500 to-pink-600 rounded-2xl p-6 text-white">
       <h2 class="text-2xl font-bold">Welcome, Robert!</h2>
       <p class="text-rose-100 mt-1">Monitoring: Alice Johnson · Grade 10A</p>
-      <div class="flex gap-4 mt-4">
+      <div class="flex flex-wrap gap-3 mt-4">
         <div class="bg-white/20 rounded-xl px-4 py-2 text-center">
           <p class="text-2xl font-bold">3.8</p>
           <p class="text-xs text-rose-100">GPA</p>

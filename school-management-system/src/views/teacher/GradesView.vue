@@ -1,16 +1,16 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <h2 class="page-title">Gradebook</h2>
-      <button @click="showAdd = true" class="btn-primary text-sm flex items-center gap-2">
+      <button @click="showAdd = true" class="btn-primary text-sm flex items-center gap-2 self-start sm:self-auto">
         <IconPlus class="w-4 h-4" /> Add Grade
       </button>
     </div>
 
     <div class="card p-4">
-      <div class="flex gap-3">
+      <div class="flex flex-col sm:flex-row gap-3">
         <SearchInput v-model="search" placeholder="Search student..." class="flex-1" />
-        <select v-model="filterClass" class="input-field w-36">
+        <select v-model="filterClass" class="input-field w-full sm:w-36">
           <option value="">All Classes</option>
           <option v-for="c in myClasses" :key="c">{{ c }}</option>
         </select>
@@ -18,6 +18,7 @@
     </div>
 
     <div class="card p-0 overflow-hidden">
+      <div class="overflow-x-auto">
       <table class="w-full">
         <thead class="bg-gray-50 border-b border-gray-200">
           <tr>
@@ -50,11 +51,12 @@
           </tr>
         </tbody>
       </table>
+      </div>
     </div>
 
     <AppModal v-model="showAdd" title="Add Grade">
       <form @submit.prevent="save" class="space-y-4">
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Student</label>
             <select v-model="form.studentId" required class="input-field" @change="onStudentChange">

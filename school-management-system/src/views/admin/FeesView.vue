@@ -12,7 +12,7 @@
     </div>
 
     <!-- Summary -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="stat-card">
         <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center">
           <span class="text-sm font-bold text-green-600">${{ (totalPaid/1000).toFixed(0) }}k</span>

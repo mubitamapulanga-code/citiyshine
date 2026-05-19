@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <h2 class="page-title">Library Management</h2>
       <div class="flex gap-2">
         <button @click="showIssue = true" class="btn-primary text-sm flex items-center gap-2"><IconPlus class="w-4 h-4" /> Issue Book</button>
@@ -8,7 +8,7 @@
     </div>
 
     <!-- Stats -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="stat-card">
         <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center"><span class="text-lg font-bold text-indigo-600">{{ store.libraryBooks.length }}</span></div>
         <div><p class="text-xs text-gray-500">Total Titles</p><p class="font-semibold text-gray-900">In Catalogue</p></div>
@@ -109,7 +109,7 @@
             <option v-for="s in store.students" :key="s.id" :value="s.id">{{ s.name }}</option>
           </select>
         </div>
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Issue Date</label>
             <input v-model="issueForm.issueDate" type="date" required class="input-field" />

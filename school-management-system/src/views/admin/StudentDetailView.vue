@@ -52,18 +52,18 @@
       <div class="lg:col-span-2 space-y-4">
         <div class="card">
           <h3 class="section-title mb-4">Personal Information</h3>
-          <div class="grid grid-cols-2 gap-4 text-sm">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div><p class="text-gray-500">Date of Birth</p><p class="font-medium mt-0.5">{{ student.dob }}</p></div>
             <div><p class="text-gray-500">Gender</p><p class="font-medium mt-0.5">{{ student.gender }}</p></div>
             <div><p class="text-gray-500">Email</p><p class="font-medium mt-0.5">{{ student.email }}</p></div>
             <div><p class="text-gray-500">Phone</p><p class="font-medium mt-0.5">{{ student.phone }}</p></div>
-            <div class="col-span-2"><p class="text-gray-500">Address</p><p class="font-medium mt-0.5">{{ student.address }}</p></div>
+            <div class="sm:col-span-2"><p class="text-gray-500">Address</p><p class="font-medium mt-0.5">{{ student.address }}</p></div>
           </div>
         </div>
 
         <div class="card">
           <h3 class="section-title mb-4">Parent / Guardian</h3>
-          <div class="grid grid-cols-2 gap-4 text-sm">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div><p class="text-gray-500">Name</p><p class="font-medium mt-0.5">{{ student.parentName }}</p></div>
             <div><p class="text-gray-500">Phone</p><p class="font-medium mt-0.5">{{ student.parentPhone }}</p></div>
           </div>
@@ -71,7 +71,7 @@
 
         <div class="card">
           <h3 class="section-title mb-4">Health Records</h3>
-          <div class="grid grid-cols-2 gap-4 text-sm">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm">
             <div><p class="text-gray-500">Allergies</p>
               <p class="font-medium mt-0.5" :class="student.allergies !== 'None' ? 'text-red-600' : 'text-gray-900'">{{ student.allergies }}</p>
             </div>

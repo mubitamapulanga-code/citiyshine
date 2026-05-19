@@ -100,7 +100,7 @@
     <!-- Add/Edit Modal -->
     <AppModal v-model="showAdd" :title="editMode ? 'Edit Student' : 'Add New Student'">
       <form @submit.prevent="saveStudent" class="space-y-4">
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
             <input v-model="form.name" required class="input-field" placeholder="Alice Johnson" />

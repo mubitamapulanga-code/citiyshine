@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <h2 class="page-title">Timetable</h2>
       <div class="flex gap-2">
         <select v-model="selectedClass" class="input-field w-36">

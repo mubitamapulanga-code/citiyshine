@@ -1,6 +1,6 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <h2 class="page-title">Analytics & Reports</h2>
       <div class="flex gap-2">
         <select class="input-field w-36 text-sm">
@@ -13,7 +13,7 @@
     </div>
 
     <!-- KPI Cards -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div v-for="kpi in kpis" :key="kpi.label" class="card">
         <p class="text-sm text-gray-500">{{ kpi.label }}</p>
         <p class="text-3xl font-bold mt-1" :class="kpi.color">{{ kpi.value }}</p>

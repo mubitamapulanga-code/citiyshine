@@ -16,7 +16,7 @@
     </div>
 
     <!-- Summary cards -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div v-for="s in summary" :key="s.label" class="stat-card">
         <div :class="`w-10 h-10 rounded-xl flex items-center justify-center ${s.bg}`">
           <span class="text-lg font-bold" :class="s.color">{{ s.value }}</span>
@@ -79,7 +79,7 @@
     <!-- Mark Attendance Modal -->
     <AppModal v-model="showMarkModal" title="Mark Attendance">
       <div class="space-y-4">
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Date</label>
             <input v-model="markDate" type="date" class="input-field" />

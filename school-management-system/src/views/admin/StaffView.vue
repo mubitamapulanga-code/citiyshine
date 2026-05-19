@@ -11,7 +11,7 @@
     </div>
 
     <!-- Stats -->
-    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       <div class="stat-card">
         <div class="w-10 h-10 bg-indigo-50 rounded-xl flex items-center justify-center"><span class="text-lg font-bold text-indigo-600">{{ store.staff.length }}</span></div>
         <div><p class="text-xs text-gray-500">Total Staff</p><p class="font-semibold text-gray-900">All Roles</p></div>
@@ -62,8 +62,8 @@
 
     <AppModal v-model="showAdd" title="Add Staff Member">
       <form @submit.prevent="saveStaff" class="space-y-4">
-        <div class="grid grid-cols-2 gap-3">
-          <div class="col-span-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="col-span-1 sm:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-1">Full Name *</label>
             <input v-model="form.name" required class="input-field" placeholder="Dr. Jane Smith" />
           </div>

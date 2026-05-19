@@ -33,32 +33,33 @@
 
       <div class="space-y-2">
         <div v-for="s in classStudents" :key="s.id" class="flex items-center justify-between p-4 rounded-xl border border-gray-200 hover:border-gray-300 transition-colors">
-          <div class="flex items-center gap-3">
-            <div class="w-9 h-9 bg-emerald-100 rounded-full flex items-center justify-center">
+          <div class="flex items-center gap-3 min-w-0">
+            <div class="w-9 h-9 bg-emerald-100 rounded-full flex items-center justify-center flex-shrink-0">
               <span class="text-xs font-bold text-emerald-700">{{ s.name.split(' ').map(n=>n[0]).join('') }}</span>
             </div>
-            <div>
-              <p class="font-medium text-gray-900">{{ s.name }}</p>
+            <div class="min-w-0">
+              <p class="font-medium text-gray-900 truncate">{{ s.name }}</p>
               <p class="text-xs text-gray-500">{{ s.id }}</p>
             </div>
           </div>
-          <div class="flex gap-2">
+          <div class="flex gap-1 flex-shrink-0 ml-2">
             <button v-for="status in ['Present', 'Absent', 'Late']" :key="status"
               @click="records[s.id] = status"
-              :class="['px-3 py-1.5 text-xs rounded-lg font-medium transition-all', records[s.id] === status ? activeClass(status) : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
-              {{ status }}
+              :class="['px-2 sm:px-3 py-1.5 text-xs rounded-lg font-medium transition-all', records[s.id] === status ? activeClass(status) : 'bg-gray-100 text-gray-600 hover:bg-gray-200']">
+              <span class="hidden sm:inline">{{ status }}</span>
+              <span class="sm:hidden">{{ status[0] }}</span>
             </button>
           </div>
         </div>
       </div>
 
-      <div class="mt-6 flex items-center justify-between">
-        <div class="flex gap-4 text-sm">
+      <div class="mt-6 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex flex-wrap gap-3 text-sm">
           <span class="text-green-600 font-medium">Present: {{ countStatus('Present') }}</span>
           <span class="text-red-600 font-medium">Absent: {{ countStatus('Absent') }}</span>
           <span class="text-amber-600 font-medium">Late: {{ countStatus('Late') }}</span>
         </div>
-        <button @click="submit" class="btn-primary">Save Attendance</button>
+        <button @click="submit" class="btn-primary self-start sm:self-auto">Save Attendance</button>
       </div>
     </div>
 

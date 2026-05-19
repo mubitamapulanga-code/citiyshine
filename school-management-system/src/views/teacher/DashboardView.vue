@@ -3,7 +3,7 @@
     <div class="bg-gradient-to-r from-emerald-600 to-teal-600 rounded-2xl p-6 text-white">
       <h2 class="text-2xl font-bold">Good morning, Dr. Connor!</h2>
       <p class="text-emerald-100 mt-1">Tuesday, May 19, 2026 · You have 3 classes today</p>
-      <div class="flex gap-4 mt-4">
+      <div class="flex flex-wrap gap-3 mt-4">
         <div class="bg-white/20 rounded-xl px-4 py-2 text-center">
           <p class="text-2xl font-bold">25</p>
           <p class="text-xs text-emerald-100">Students</p>

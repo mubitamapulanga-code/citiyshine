@@ -2,18 +2,18 @@
   <div class="space-y-6">
     <div class="flex items-center justify-between">
       <h2 class="page-title">Academics & Gradebook</h2>
-      <div class="flex gap-2">
-        <button @click="activeTab = 'grades'" :class="['px-4 py-2 text-sm rounded-lg font-medium transition-colors', activeTab === 'grades' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50']">Gradebook</button>
-        <button @click="activeTab = 'assignments'" :class="['px-4 py-2 text-sm rounded-lg font-medium transition-colors', activeTab === 'assignments' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50']">Assignments</button>
-        <button @click="activeTab = 'exams'" :class="['px-4 py-2 text-sm rounded-lg font-medium transition-colors', activeTab === 'exams' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50']">Exams</button>
+      <div class="flex flex-wrap gap-2">
+        <button @click="activeTab = 'grades'" :class="['px-3 py-2 text-sm rounded-lg font-medium transition-colors', activeTab === 'grades' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50']">Gradebook</button>
+        <button @click="activeTab = 'assignments'" :class="['px-3 py-2 text-sm rounded-lg font-medium transition-colors', activeTab === 'assignments' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50']">Assignments</button>
+        <button @click="activeTab = 'exams'" :class="['px-3 py-2 text-sm rounded-lg font-medium transition-colors', activeTab === 'exams' ? 'bg-indigo-600 text-white' : 'bg-white border border-gray-200 text-gray-600 hover:bg-gray-50']">Exams</button>
       </div>
     </div>
 
     <!-- Gradebook -->
     <div v-if="activeTab === 'grades'" class="space-y-4">
-      <div class="flex gap-3">
+      <div class="flex flex-col sm:flex-row gap-3">
         <SearchInput v-model="search" placeholder="Search student..." class="flex-1" />
-        <select v-model="filterSubject" class="input-field w-40">
+        <select v-model="filterSubject" class="input-field w-full sm:w-40">
           <option value="">All Subjects</option>
           <option v-for="s in subjects" :key="s">{{ s }}</option>
         </select>
@@ -22,6 +22,7 @@
         </button>
       </div>
       <div class="card p-0 overflow-hidden">
+        <div class="overflow-x-auto">
         <table class="w-full">
           <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
@@ -53,6 +54,7 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
 
@@ -92,6 +94,7 @@
         <button class="btn-primary text-sm flex items-center gap-2"><IconPlus class="w-4 h-4" /> Schedule Exam</button>
       </div>
       <div class="card p-0 overflow-hidden">
+        <div class="overflow-x-auto">
         <table class="w-full">
           <thead class="bg-gray-50 border-b border-gray-200">
             <tr>
@@ -116,15 +119,14 @@
             </tr>
           </tbody>
         </table>
+        </div>
       </div>
     </div>
 
     <!-- Add Grade Modal -->
     <AppModal v-model="showAddGrade" title="Add Grade">
       <form @submit.prevent="saveGrade" class="space-y-4">
-        <div class="grid grid-cols-2 gap-3">
-          <div>
-            <label class="block text-sm font-medium text-gray-700 mb-1">Student</label>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <select v-model="gradeForm.studentId" required class="input-field" @change="onStudentChange">
               <option v-for="s in store.students" :key="s.id" :value="s.id">{{ s.name }}</option>
             </select>

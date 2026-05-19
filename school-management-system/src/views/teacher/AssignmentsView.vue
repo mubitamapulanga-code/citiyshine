@@ -1,8 +1,8 @@
 <template>
   <div class="space-y-6">
-    <div class="flex items-center justify-between">
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <h2 class="page-title">Assignments</h2>
-      <button @click="showAdd = true" class="btn-primary text-sm flex items-center gap-2">
+      <button @click="showAdd = true" class="btn-primary text-sm flex items-center gap-2 self-start sm:self-auto">
         <IconPlus class="w-4 h-4" /> New Assignment
       </button>
     </div>
@@ -45,7 +45,7 @@
           <label class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
           <input v-model="form.title" required class="input-field" placeholder="Assignment title" />
         </div>
-        <div class="grid grid-cols-2 gap-3">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-sm font-medium text-gray-700 mb-1">Subject</label>
             <select v-model="form.subject" class="input-field">
