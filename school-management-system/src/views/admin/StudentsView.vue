@@ -7,7 +7,7 @@
         <p class="text-sm text-gray-500 mt-1">{{ store.students.length }} students enrolled</p>
       </div>
       <div class="flex gap-2">
-        <button class="btn-secondary flex items-center gap-2 text-sm">
+        <button class="btn-secondary flex items-center gap-2 text-sm" @click="importCSV">
           <IconUpload class="w-4 h-4" /> Import CSV
         </button>
         <button @click="showAdd = true" class="btn-primary flex items-center gap-2 text-sm">
@@ -48,7 +48,7 @@
             </tr>
           </thead>
           <tbody class="divide-y divide-gray-100">
-            <tr v-for="s in filtered" :key="s.id" class="hover:bg-gray-50 transition-colors">
+            <tr v-for="s in paged" :key="s.id" class="hover:bg-gray-50 transition-colors">
               <td class="table-cell">
                 <div class="flex items-center gap-3">
                   <div class="w-8 h-8 bg-indigo-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -88,11 +88,14 @@
         </table>
       </div>
       <div class="px-6 py-3 border-t border-gray-100 flex items-center justify-between">
-        <p class="text-sm text-gray-500">Showing {{ filtered.length }} of {{ store.students.length }} students</p>
+        <p class="text-sm text-gray-500">Showing {{ paged.length }} of {{ filtered.length }} students</p>
         <div class="flex gap-1">
-          <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">Previous</button>
-          <button class="px-3 py-1 text-sm bg-indigo-600 text-white rounded">1</button>
-          <button class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50">Next</button>
+          <button @click="page > 1 && page--" :disabled="page === 1"
+            class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed">Previous</button>
+          <button v-for="p in totalPages" :key="p" @click="page = p"
+            :class="['px-3 py-1 text-sm rounded', page === p ? 'bg-indigo-600 text-white' : 'border border-gray-200 hover:bg-gray-50']">{{ p }}</button>
+          <button @click="page < totalPages && page++" :disabled="page === totalPages"
+            class="px-3 py-1 text-sm border border-gray-200 rounded hover:bg-gray-50 disabled:opacity-40 disabled:cursor-not-allowed">Next</button>
         </div>
       </div>
     </div>
@@ -199,6 +202,39 @@ const filtered = computed(() => store.students.filter(s => {
   const matchS = !filterStatus.value || s.status === filterStatus.value
   return matchQ && matchG && matchS
 }))
+
+const PAGE_SIZE = 10
+const page = ref(1)
+const totalPages = computed(() => Math.max(1, Math.ceil(filtered.value.length / PAGE_SIZE)))
+const paged = computed(() => {
+  // reset to page 1 when filter changes
+  if (page.value > totalPages.value) page.value = 1
+  const start = (page.value - 1) * PAGE_SIZE
+  return filtered.value.slice(start, start + PAGE_SIZE)
+})
+
+function importCSV() {
+  const input = document.createElement('input')
+  input.type = 'file'
+  input.accept = '.csv'
+  input.onchange = (e) => {
+    const file = e.target.files[0]
+    if (!file) return
+    const reader = new FileReader()
+    reader.onload = (ev) => {
+      const lines = ev.target.result.split('\n').filter(Boolean)
+      const headers = lines[0].split(',').map(h => h.trim())
+      lines.slice(1).forEach(line => {
+        const vals = line.split(',').map(v => v.trim())
+        const obj = {}
+        headers.forEach((h, i) => { obj[h] = vals[i] || '' })
+        if (obj.name) store.addStudent(obj)
+      })
+    }
+    reader.readAsText(file)
+  }
+  input.click()
+}
 
 function editStudent(s) {
   form.value = { ...s }

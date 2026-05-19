@@ -72,7 +72,8 @@
         <div class="card">
           <h3 class="section-title mb-4">Quick Broadcast</h3>
           <div class="space-y-3">
-            <button v-for="b in broadcasts" :key="b.label" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all text-sm">
+            <button v-for="b in broadcasts" :key="b.label" @click="quickBroadcast(b)"
+            class="w-full text-left p-3 rounded-lg border border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all text-sm">
               <p class="font-medium text-gray-900">{{ b.label }}</p>
               <p class="text-xs text-gray-500 mt-0.5">{{ b.desc }}</p>
             </button>
@@ -127,10 +128,15 @@ const showCompose = ref(false)
 const msgForm = ref({ type: 'announcement', to: 'All', subject: '', body: '' })
 
 const broadcasts = [
-  { label: 'Fee Reminder', desc: 'Send to parents with overdue fees' },
-  { label: 'Exam Alert', desc: 'Notify students of upcoming exams' },
-  { label: 'Attendance Alert', desc: 'Alert parents of absent students' },
+  { label: 'Fee Reminder', desc: 'Send to parents with overdue fees', subject: 'Fee Payment Reminder', body: 'This is a reminder that your child has an outstanding fee balance. Please make payment at your earliest convenience.' },
+  { label: 'Exam Alert', desc: 'Notify students of upcoming exams', subject: 'Upcoming Exam Notification', body: 'Please be advised that Term 2 examinations begin on June 10, 2026. Ensure you review the exam schedule in the Academics section.' },
+  { label: 'Attendance Alert', desc: 'Alert parents of absent students', subject: 'Attendance Notice', body: 'Your child was marked absent today. Please contact the school office if this was unplanned.' },
 ]
+
+function quickBroadcast(b) {
+  msgForm.value = { type: 'announcement', to: 'All', subject: b.subject, body: b.body }
+  showCompose.value = true
+}
 
 function sendMsg() {
   store.sendMessage({ from: auth.user?.name, fromRole: auth.user?.role, to: msgForm.value.to, toRole: 'All', subject: msgForm.value.subject, body: msgForm.value.body, type: msgForm.value.type })

@@ -3,12 +3,12 @@
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <h2 class="page-title">Analytics & Reports</h2>
       <div class="flex gap-2">
-        <select class="input-field w-36 text-sm">
+        <select v-model="selectedTerm" class="input-field w-36 text-sm">
           <option>Term 2 · 2026</option>
           <option>Term 1 · 2026</option>
           <option>Term 2 · 2025</option>
         </select>
-        <button class="btn-secondary text-sm flex items-center gap-2"><IconDownload class="w-4 h-4" /> Export Report</button>
+        <button @click="exportReport" class="btn-secondary text-sm flex items-center gap-2"><IconDownload class="w-4 h-4" /> Export Report</button>
       </div>
     </div>
 
@@ -78,7 +78,8 @@
       <div class="card">
         <h3 class="section-title mb-4">Quick Reports</h3>
         <div class="space-y-2">
-          <button v-for="r in reports" :key="r" class="w-full text-left p-3 rounded-lg border border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all text-sm font-medium text-gray-700 flex items-center justify-between">
+          <button v-for="r in reports" :key="r" @click="downloadReport(r)"
+            class="w-full text-left p-3 rounded-lg border border-gray-200 hover:border-indigo-300 hover:bg-indigo-50 transition-all text-sm font-medium text-gray-700 flex items-center justify-between">
             {{ r }}
             <IconDownload class="w-4 h-4 text-gray-400" />
           </button>
@@ -102,12 +103,63 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { useAppStore } from '@/stores/app'
 import { IconDownload } from '@/components/icons'
 
 const store = useAppStore()
 const analytics = computed(() => store.analytics)
+const selectedTerm = ref('Term 2 · 2026')
+
+function exportReport() {
+  const rows = [
+    ['Metric', 'Value'],
+    ['Total Students', '342'],
+    ['Avg Attendance', '94.2%'],
+    ['Avg GPA', '3.4'],
+    ['Fee Collection Rate', '78.5%'],
+    ['Term', selectedTerm.value],
+  ]
+  const csv = rows.map(r => r.join(',')).join('\n')
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `analytics-report-${selectedTerm.value.replace(/\s·\s/g, '-')}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+}
+
+function downloadReport(name) {
+  const store2 = useAppStore()
+  let rows = [['Report', name], ['Term', selectedTerm.value], ['Generated', new Date().toLocaleString()], []]
+
+  if (name === 'Attendance Summary') {
+    rows.push(['Student', 'Date', 'Status', 'Class'])
+    store2.attendance.forEach(r => rows.push([r.studentName, r.date, r.status, r.class]))
+  } else if (name === 'Fee Collection Report') {
+    rows.push(['Student', 'Grade', 'Fee Type', 'Amount', 'Paid', 'Balance', 'Status'])
+    store2.feeRecords.forEach(f => rows.push([f.studentName, f.grade, f.feeType, f.amount, f.paid, f.balance, f.status]))
+  } else if (name === 'Term 2 Report Cards') {
+    rows.push(['Student', 'Subject', 'Assignment', 'Score', 'Max', 'Grade'])
+    store2.grades.forEach(g => rows.push([g.studentName, g.subject, g.assignment, g.score, g.maxScore, g.grade]))
+  } else if (name === 'Staff Payroll Summary') {
+    rows.push(['Name', 'Role', 'Department', 'Salary'])
+    store2.staff.forEach(s => rows.push([s.name, s.role, s.department, s.salary]))
+  } else if (name === 'Library Usage Report') {
+    rows.push(['Book', 'Student', 'Issue Date', 'Due Date', 'Status'])
+    store2.libraryIssues.forEach(i => rows.push([i.bookTitle, i.studentName, i.issueDate, i.dueDate, i.status]))
+  }
+
+  const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n')
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `${name.toLowerCase().replace(/\s+/g, '-')}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
+}
 
 const kpis = [
   { label: 'Total Students', value: '342', color: 'text-indigo-600', trend: 4.2 },

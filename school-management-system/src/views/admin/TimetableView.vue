@@ -6,7 +6,7 @@
         <select v-model="selectedClass" class="input-field w-36">
           <option v-for="c in classes" :key="c">{{ c }}</option>
         </select>
-        <button class="btn-secondary text-sm flex items-center gap-2"><IconDownload class="w-4 h-4" /> Export PDF</button>
+        <button @click="exportPDF" class="btn-secondary text-sm flex items-center gap-2"><IconDownload class="w-4 h-4" /> Export PDF</button>
       </div>
     </div>
 
@@ -80,6 +80,27 @@ const colorMap = {
 
 function subjectColor(subject) {
   return colorMap[subject] || 'bg-gray-100 text-gray-700'
+}
+
+function exportPDF() {
+  const styleSheets = Array.from(document.styleSheets)
+  let cssText = ''
+  for (const sheet of styleSheets) {
+    try { cssText += Array.from(sheet.cssRules || []).map(r => r.cssText).join('\n') } catch { /* skip */ }
+  }
+  const table = document.querySelector('table')
+  if (!table) return
+  const win = window.open('', '_blank', 'width=900,height=700')
+  win.document.write(`<!DOCTYPE html><html><head>
+    <title>Timetable — ${selectedClass.value}</title><meta charset="utf-8"/>
+    <style>*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Inter',system-ui,sans-serif;padding:24px}
+    @media print{body{padding:0}@page{margin:10mm;size:landscape}}
+    ${cssText}</style>
+  </head><body>${table.outerHTML}</body></html>`)
+  win.document.close()
+  win.focus()
+  setTimeout(() => { win.print(); win.close() }, 400)
 }
 
 const legend = [

@@ -2,9 +2,17 @@
   <div class="space-y-6">
     <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
       <h2 class="page-title">Gradebook</h2>
-      <button @click="showAdd = true" class="btn-primary text-sm flex items-center gap-2 self-start sm:self-auto">
-        <IconPlus class="w-4 h-4" /> Add Grade
-      </button>
+      <div class="flex gap-2">
+        <button @click="exportGrades" class="btn-secondary text-sm flex items-center gap-2">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+          </svg>
+          Export CSV
+        </button>
+        <button @click="showAdd = true" class="btn-primary text-sm flex items-center gap-2 self-start sm:self-auto">
+          <IconPlus class="w-4 h-4" /> Add Grade
+        </button>
+      </div>
     </div>
 
     <div class="card p-4">
@@ -134,5 +142,18 @@ function gradeClass(g) {
   if (g.startsWith('B')) return 'text-blue-600'
   if (g.startsWith('C')) return 'text-amber-600'
   return 'text-red-600'
+}
+
+function exportGrades() {
+  const rows = [['Student', 'Subject', 'Assignment', 'Score', 'Max Score', 'Grade', 'Date']]
+  filtered.value.forEach(g => rows.push([g.studentName, g.subject, g.assignment, g.score, g.maxScore, g.grade, g.date]))
+  const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n')
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'gradebook.csv'
+  a.click()
+  URL.revokeObjectURL(url)
 }
 </script>

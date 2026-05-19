@@ -25,8 +25,8 @@
         <div><p class="text-xs text-gray-500">Admin Staff</p><p class="font-semibold text-gray-900">Active</p></div>
       </div>
       <div class="stat-card">
-        <div class="w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center"><span class="text-lg font-bold text-rose-600">2</span></div>
-        <div><p class="text-xs text-gray-500">On Leave</p><p class="font-semibold text-gray-900">This Week</p></div>
+        <div class="w-10 h-10 bg-rose-50 rounded-xl flex items-center justify-center"><span class="text-lg font-bold text-rose-600">{{ leaveRequests.length }}</span></div>
+        <div><p class="text-xs text-gray-500">Leave Requests</p><p class="font-semibold text-gray-900">Pending</p></div>
       </div>
     </div>
 
@@ -50,16 +50,17 @@
         <div class="mt-4 pt-4 border-t border-gray-100 grid grid-cols-2 gap-2 text-xs">
           <div><p class="text-gray-400">Joined</p><p class="font-medium text-gray-700">{{ s.joinDate }}</p></div>
           <div><p class="text-gray-400">Qualification</p><p class="font-medium text-gray-700 truncate">{{ s.qualification }}</p></div>
-          <div v-if="s.subjects.length"><p class="text-gray-400">Subjects</p><p class="font-medium text-gray-700">{{ s.subjects.join(', ') }}</p></div>
+          <div v-if="s.subjects && s.subjects.length"><p class="text-gray-400">Subjects</p><p class="font-medium text-gray-700">{{ s.subjects.join(', ') }}</p></div>
           <div><p class="text-gray-400">Salary</p><p class="font-medium text-gray-700">${{ s.salary.toLocaleString() }}/yr</p></div>
         </div>
         <div class="mt-3 flex gap-2">
-          <button class="btn-secondary text-xs py-1.5 flex-1">View Profile</button>
-          <button class="btn-secondary text-xs py-1.5 flex-1">Leave Request</button>
+          <button @click="viewProfile(s)" class="btn-secondary text-xs py-1.5 flex-1">View Profile</button>
+          <button @click="openLeave(s)" class="btn-secondary text-xs py-1.5 flex-1">Leave Request</button>
         </div>
       </div>
     </div>
 
+    <!-- Add Staff Modal -->
     <AppModal v-model="showAdd" title="Add Staff Member">
       <form @submit.prevent="saveStaff" class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
@@ -102,6 +103,79 @@
         </div>
       </form>
     </AppModal>
+
+    <!-- View Profile Modal -->
+    <AppModal v-model="showProfile" :title="profileStaff?.name || 'Staff Profile'">
+      <div v-if="profileStaff" class="space-y-4">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center flex-shrink-0">
+            <span class="text-xl font-bold text-indigo-700">{{ profileStaff.name.split(' ').filter(n=>n!=='Dr.'&&n!=='Mr.'&&n!=='Ms.').map(n=>n[0]).slice(0,2).join('') }}</span>
+          </div>
+          <div>
+            <p class="font-bold text-gray-900 text-lg">{{ profileStaff.name }}</p>
+            <p class="text-sm text-gray-500">{{ profileStaff.role }} · {{ profileStaff.department }}</p>
+            <AppBadge :text="profileStaff.status" />
+          </div>
+        </div>
+        <div class="grid grid-cols-2 gap-3 text-sm bg-gray-50 rounded-xl p-4">
+          <div><p class="text-xs text-gray-500">Staff ID</p><p class="font-semibold font-mono">{{ profileStaff.id }}</p></div>
+          <div><p class="text-xs text-gray-500">Email</p><p class="font-medium truncate">{{ profileStaff.email }}</p></div>
+          <div><p class="text-xs text-gray-500">Phone</p><p class="font-medium">{{ profileStaff.phone }}</p></div>
+          <div><p class="text-xs text-gray-500">Joined</p><p class="font-medium">{{ profileStaff.joinDate }}</p></div>
+          <div><p class="text-xs text-gray-500">Qualification</p><p class="font-medium">{{ profileStaff.qualification }}</p></div>
+          <div><p class="text-xs text-gray-500">Salary</p><p class="font-medium">${{ profileStaff.salary.toLocaleString() }}/yr</p></div>
+          <div v-if="profileStaff.subjects && profileStaff.subjects.length" class="col-span-2">
+            <p class="text-xs text-gray-500">Subjects</p>
+            <p class="font-medium">{{ profileStaff.subjects.join(', ') }}</p>
+          </div>
+        </div>
+        <button @click="showProfile = false" class="btn-secondary w-full">Close</button>
+      </div>
+    </AppModal>
+
+    <!-- Leave Request Modal -->
+    <AppModal v-model="showLeave" title="Submit Leave Request">
+      <form @submit.prevent="submitLeave" class="space-y-4">
+        <div class="bg-gray-50 rounded-xl p-3 text-sm">
+          <p class="text-gray-500">Staff Member</p>
+          <p class="font-semibold text-gray-900">{{ leaveStaff?.name }}</p>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">From Date</label>
+            <input v-model="leaveForm.from" type="date" required class="input-field" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">To Date</label>
+            <input v-model="leaveForm.to" type="date" required class="input-field" />
+          </div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Leave Type</label>
+          <select v-model="leaveForm.type" class="input-field">
+            <option>Annual Leave</option><option>Sick Leave</option><option>Emergency Leave</option><option>Maternity/Paternity</option>
+          </select>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Reason</label>
+          <textarea v-model="leaveForm.reason" rows="3" class="input-field resize-none" placeholder="Brief reason for leave..." />
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" @click="showLeave = false" class="btn-secondary flex-1">Cancel</button>
+          <button type="submit" class="btn-primary flex-1">Submit Request</button>
+        </div>
+      </form>
+    </AppModal>
+
+    <!-- Toast -->
+    <Transition name="toast">
+      <div v-if="toast" class="fixed bottom-6 right-6 z-50 bg-gray-900 text-white text-sm px-5 py-3 rounded-xl shadow-xl flex items-center gap-3">
+        <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/>
+        </svg>
+        {{ toast }}
+      </div>
+    </Transition>
   </div>
 </template>
 
@@ -116,6 +190,13 @@ import { IconPlus } from '@/components/icons'
 const store = useAppStore()
 const search = ref('')
 const showAdd = ref(false)
+const showProfile = ref(false)
+const showLeave = ref(false)
+const profileStaff = ref(null)
+const leaveStaff = ref(null)
+const leaveRequests = ref([])
+const toast = ref('')
+let toastTimer = null
 
 const teacherCount = computed(() => store.staff.filter(s => s.role === 'Teacher').length)
 const adminCount = computed(() => store.staff.filter(s => s.role === 'Administrator').length)
@@ -126,10 +207,39 @@ const filtered = computed(() => {
 })
 
 const form = ref({ name: '', role: 'Teacher', department: 'Mathematics', email: '', phone: '', qualification: '', salary: 0, subjects: [] })
+const leaveForm = ref({ from: '', to: '', type: 'Annual Leave', reason: '' })
 
 function saveStaff() {
   store.addStaff({ ...form.value, joinDate: new Date().toISOString().split('T')[0] })
   showAdd.value = false
   form.value = { name: '', role: 'Teacher', department: 'Mathematics', email: '', phone: '', qualification: '', salary: 0, subjects: [] }
 }
+
+function viewProfile(s) {
+  profileStaff.value = s
+  showProfile.value = true
+}
+
+function openLeave(s) {
+  leaveStaff.value = s
+  leaveForm.value = { from: '', to: '', type: 'Annual Leave', reason: '' }
+  showLeave.value = true
+}
+
+function submitLeave() {
+  leaveRequests.value.push({ ...leaveForm.value, staffId: leaveStaff.value.id, staffName: leaveStaff.value.name, submittedAt: new Date().toISOString() })
+  showLeave.value = false
+  showToast(`Leave request submitted for ${leaveStaff.value.name}`)
+}
+
+function showToast(msg) {
+  toast.value = msg
+  clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => { toast.value = '' }, 3000)
+}
 </script>
+
+<style scoped>
+.toast-enter-active, .toast-leave-active { transition: all 0.3s ease; }
+.toast-enter-from, .toast-leave-to { opacity: 0; transform: translateY(12px); }
+</style>

@@ -148,6 +148,17 @@
       </div>
     </div>
 
+    <!-- Hidden receipt render area for multi-print -->
+    <div class="hidden" aria-hidden="true">
+      <div v-for="r in myReceipts" :key="r.id" :data-receipt-id="r.id">
+        <ReceiptDocument
+          :receipt="r"
+          :template="receiptStore.templates.find(t => t.id === r.templateId) || receiptStore.defaultTemplate"
+          :print-id="`receipt-hidden-${r.id}`"
+        />
+      </div>
+    </div>
+
     <!-- Generate Receipt Modal -->
     <AppModal v-model="showGenModal" title="Generate Receipt">
       <form @submit.prevent="submitGen" class="space-y-4">
@@ -216,6 +227,7 @@ import AppModal from '@/components/AppModal.vue'
 import AppBadge from '@/components/AppBadge.vue'
 import SearchInput from '@/components/SearchInput.vue'
 import ReceiptViewer from '@/components/ReceiptViewer.vue'
+import ReceiptDocument from '@/components/ReceiptDocument.vue'
 
 const store = useAppStore()
 const receiptStore = useReceiptStore()

@@ -9,7 +9,7 @@
         <button @click="showMarkModal = true" class="btn-primary flex items-center gap-2 text-sm">
           <IconCheck class="w-4 h-4" /> Mark Attendance
         </button>
-        <button class="btn-secondary flex items-center gap-2 text-sm">
+        <button @click="exportAttendance" class="btn-secondary flex items-center gap-2 text-sm">
           <IconDownload class="w-4 h-4" /> Export
         </button>
       </div>
@@ -157,6 +157,19 @@ const summary = computed(() => {
 
 function updateStatus(rec, status) {
   store.markAttendance([{ studentId: rec.studentId, studentName: rec.studentName, date: rec.date, status, period: rec.period, class: rec.class }])
+}
+
+function exportAttendance() {
+  const rows = [['Student', 'Class', 'Date', 'Period', 'Status']]
+  filtered.value.forEach(r => rows.push([r.studentName, r.class, r.date, r.period, r.status]))
+  const csv = rows.map(r => r.map(v => `"${v}"`).join(',')).join('\n')
+  const blob = new Blob([csv], { type: 'text/csv' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = `attendance-${filterDate.value || 'all'}.csv`
+  a.click()
+  URL.revokeObjectURL(url)
 }
 
 function statusBtnActive(s) {

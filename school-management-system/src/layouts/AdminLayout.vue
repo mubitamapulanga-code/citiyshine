@@ -85,7 +85,7 @@
         </div>
         <div class="flex items-center gap-2 sm:gap-3">
           <!-- Notifications -->
-          <div class="relative">
+          <div class="relative" ref="notifRef">
             <button @click="showNotifs = !showNotifs" class="relative p-2 rounded-lg hover:bg-gray-100 transition-colors">
               <IconBell class="w-5 h-5 text-gray-600" />
               <span v-if="unreadCount > 0" class="absolute top-1 right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex items-center justify-center">{{ unreadCount }}</span>
@@ -120,7 +120,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useRoute, useRouter, RouterLink, RouterView } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useAppStore } from '@/stores/app'
@@ -136,6 +136,15 @@ const route = useRoute()
 const router = useRouter()
 const showNotifs = ref(false)
 const mobileOpen = ref(false)
+const notifRef = ref(null)
+
+function onClickOutside(e) {
+  if (notifRef.value && !notifRef.value.contains(e.target)) {
+    showNotifs.value = false
+  }
+}
+onMounted(() => document.addEventListener('mousedown', onClickOutside))
+onUnmounted(() => document.removeEventListener('mousedown', onClickOutside))
 
 const navItems = [
   { to: '/admin/dashboard', label: 'Dashboard', icon: IconDashboard },

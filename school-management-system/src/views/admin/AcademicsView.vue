@@ -91,7 +91,7 @@
     <div v-if="activeTab === 'exams'" class="space-y-4">
       <div class="flex justify-between items-center">
         <p class="text-sm text-gray-500">{{ store.exams.length }} exams scheduled</p>
-        <button class="btn-primary text-sm flex items-center gap-2"><IconPlus class="w-4 h-4" /> Schedule Exam</button>
+        <button @click="showAddExam = true" class="btn-primary text-sm flex items-center gap-2"><IconPlus class="w-4 h-4" /> Schedule Exam</button>
       </div>
       <div class="card p-0 overflow-hidden">
         <div class="overflow-x-auto">
@@ -158,6 +158,56 @@
         </div>
       </form>
     </AppModal>
+
+    <!-- Schedule Exam Modal -->
+    <AppModal v-model="showAddExam" title="Schedule Exam">
+      <form @submit.prevent="saveExam" class="space-y-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div class="sm:col-span-2">
+            <label class="block text-sm font-medium text-gray-700 mb-1">Exam Name *</label>
+            <input v-model="examForm.name" required class="input-field" placeholder="Term 2 Mathematics Final" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Subject *</label>
+            <select v-model="examForm.subject" required class="input-field">
+              <option v-for="s in subjects" :key="s">{{ s }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Class *</label>
+            <select v-model="examForm.class" required class="input-field">
+              <option v-for="c in ['8A','8B','9A','9B','9C','10A','10B','11A','11B','12A','12B']" :key="c">{{ c }}</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+            <input v-model="examForm.date" type="date" required class="input-field" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+            <input v-model="examForm.time" class="input-field" placeholder="09:00-11:00" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Room</label>
+            <input v-model="examForm.room" class="input-field" placeholder="Hall A" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Total Marks</label>
+            <input v-model.number="examForm.totalMarks" type="number" class="input-field" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Invigilator</label>
+            <select v-model="examForm.invigilator" class="input-field">
+              <option v-for="s in store.staff.filter(s=>s.role==='Teacher')" :key="s.id" :value="s.name">{{ s.name }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" @click="showAddExam = false" class="btn-secondary flex-1">Cancel</button>
+          <button type="submit" class="btn-primary flex-1">Schedule Exam</button>
+        </div>
+      </form>
+    </AppModal>
   </div>
 </template>
 
@@ -174,6 +224,7 @@ const activeTab = ref('grades')
 const search = ref('')
 const filterSubject = ref('')
 const showAddGrade = ref(false)
+const showAddExam = ref(false)
 
 const subjects = ['Mathematics', 'Science', 'English', 'History', 'Art', 'Music', 'PE']
 
@@ -184,6 +235,7 @@ const filteredGrades = computed(() => store.grades.filter(g => {
 }))
 
 const gradeForm = ref({ studentId: '', studentName: '', subject: 'Mathematics', assignment: '', score: 0, maxScore: 100, teacher: 'Dr. Sarah Connor', term: 'Term 2', date: '2026-05-19' })
+const examForm = ref({ name: '', subject: 'Mathematics', class: '10A', date: '', time: '', room: '', totalMarks: 100, invigilator: '' })
 
 function onStudentChange() {
   const s = store.students.find(s => s.id === gradeForm.value.studentId)
@@ -204,6 +256,12 @@ function computeGrade(score, max) {
 function saveGrade() {
   store.addGrade({ ...gradeForm.value, grade: computeGrade(gradeForm.value.score, gradeForm.value.maxScore) })
   showAddGrade.value = false
+}
+
+function saveExam() {
+  store.exams.push({ id: store.exams.length + 1, duration: 120, ...examForm.value })
+  showAddExam.value = false
+  examForm.value = { name: '', subject: 'Mathematics', class: '10A', date: '', time: '', room: '', totalMarks: 100, invigilator: '' }
 }
 
 function scoreColor(s) {
