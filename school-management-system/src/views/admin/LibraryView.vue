@@ -35,6 +35,7 @@
           <SearchInput v-model="bookSearch" placeholder="Search books..." class="w-48" />
         </div>
         <div class="card p-0 overflow-hidden">
+          <div class="overflow-x-auto">
           <table class="w-full">
             <thead class="bg-gray-50 border-b border-gray-200">
               <tr>
@@ -56,6 +57,7 @@
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
 
@@ -63,6 +65,7 @@
       <div class="space-y-4">
         <h3 class="section-title">Active Issues & Returns</h3>
         <div class="card p-0 overflow-hidden">
+          <div class="overflow-x-auto">
           <table class="w-full">
             <thead class="bg-gray-50 border-b border-gray-200">
               <tr>
@@ -88,6 +91,7 @@
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </div>

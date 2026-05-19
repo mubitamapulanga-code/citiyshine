@@ -69,7 +69,7 @@
               <option>Mathematics</option><option>Calculus</option><option>Algebra</option>
             </select>
           </div>
-          <div class="col-span-2">
+          <div class="col-span-1 sm:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-1">Assignment</label>
             <input v-model="form.assignment" required class="input-field" placeholder="Quiz 3" />
           </div>

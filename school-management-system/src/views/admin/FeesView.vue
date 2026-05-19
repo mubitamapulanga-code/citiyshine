@@ -43,11 +43,11 @@
     <div class="card p-4">
       <div class="flex flex-col sm:flex-row gap-3">
         <SearchInput v-model="search" placeholder="Search student..." class="flex-1" />
-        <select v-model="filterStatus" class="input-field w-36">
+        <select v-model="filterStatus" class="input-field w-full sm:w-36">
           <option value="">All Status</option>
           <option>Paid</option><option>Partial</option><option>Overdue</option>
         </select>
-        <select v-model="filterType" class="input-field w-36">
+        <select v-model="filterType" class="input-field w-full sm:w-36">
           <option value="">All Types</option>
           <option>Tuition</option><option>Transport</option><option>Library</option>
         </select>

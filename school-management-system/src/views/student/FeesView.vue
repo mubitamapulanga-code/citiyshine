@@ -2,7 +2,7 @@
   <div class="space-y-6">
     <h2 class="page-title">Fee Statement</h2>
 
-    <div class="grid grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div class="stat-card">
         <div class="w-10 h-10 bg-green-50 rounded-xl flex items-center justify-center"><span class="text-sm font-bold text-green-600">${{ totalPaid }}</span></div>
         <div><p class="text-xs text-gray-500">Total Paid</p><p class="font-semibold text-gray-900">This Term</p></div>

@@ -25,8 +25,8 @@
     <div class="card">
       <h3 class="section-title mb-4">Performance by Subject</h3>
       <div class="space-y-4">
-        <div v-for="sub in subjectBreakdown" :key="sub.subject" class="flex items-center gap-4">
-          <span class="text-sm font-medium text-gray-700 w-28 flex-shrink-0">{{ sub.subject }}</span>
+        <div v-for="sub in subjectBreakdown" :key="sub.subject" class="flex items-center gap-3">
+          <span class="text-sm font-medium text-gray-700 w-24 flex-shrink-0 truncate">{{ sub.subject }}</span>
           <div class="flex-1 bg-gray-100 rounded-full h-3">
             <div class="h-3 rounded-full transition-all duration-500"
               :class="sub.avg >= 80 ? 'bg-green-500' : sub.avg >= 60 ? 'bg-amber-400' : 'bg-red-400'"
@@ -43,7 +43,6 @@
       <div class="px-6 py-4 border-b border-gray-100">
         <h3 class="section-title">All Grades</h3>
       </div>
-    <div class="card p-0 overflow-hidden">
       <div class="overflow-x-auto">
       <table class="w-full">
         <thead class="bg-gray-50 border-b border-gray-200">

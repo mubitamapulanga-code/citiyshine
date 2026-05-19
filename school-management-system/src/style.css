@@ -4,8 +4,17 @@
   * {
     box-sizing: border-box;
   }
+  html {
+    scroll-behavior: smooth;
+    -webkit-tap-highlight-color: transparent;
+  }
   body {
     @apply bg-gray-50 text-gray-900 font-sans;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* Ensure minimum tap target size on mobile */
+  button, a, [role="button"] {
+    min-height: 36px;
   }
 }
 
@@ -59,12 +68,12 @@
     @apply text-gray-600 hover:bg-gray-100 hover:text-gray-900;
   }
   .stat-card {
-    @apply bg-white rounded-xl border border-gray-200 p-5 flex items-center gap-4;
+    @apply bg-white rounded-xl border border-gray-200 p-4 sm:p-5 flex items-center gap-3 sm:gap-4;
   }
   .page-title {
-    @apply text-2xl font-bold text-gray-900;
+    @apply text-xl sm:text-2xl font-bold text-gray-900;
   }
   .section-title {
-    @apply text-lg font-semibold text-gray-900;
+    @apply text-base sm:text-lg font-semibold text-gray-900;
   }
 }

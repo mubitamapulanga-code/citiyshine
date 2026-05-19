@@ -127,6 +127,8 @@
     <AppModal v-model="showAddGrade" title="Add Grade">
       <form @submit.prevent="saveGrade" class="space-y-4">
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Student</label>
             <select v-model="gradeForm.studentId" required class="input-field" @change="onStudentChange">
               <option v-for="s in store.students" :key="s.id" :value="s.id">{{ s.name }}</option>
             </select>
@@ -137,7 +139,7 @@
               <option v-for="s in subjects" :key="s">{{ s }}</option>
             </select>
           </div>
-          <div class="col-span-2">
+          <div class="col-span-1 sm:col-span-2">
             <label class="block text-sm font-medium text-gray-700 mb-1">Assignment / Exam</label>
             <input v-model="gradeForm.assignment" required class="input-field" placeholder="Midterm Exam" />
           </div>
