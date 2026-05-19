@@ -91,7 +91,7 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter, RouterLink, RouterView } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useAppStore } from '@/stores/app'
-import { IconDashboard, IconAttendance, IconFees, IconCommunication, IconLogout, IconMenu, IconProgress } from '@/components/icons'
+import { IconDashboard, IconAttendance, IconFees, IconCommunication, IconLogout, IconMenu, IconProgress, IconReceipt } from '@/components/icons'
 
 const IconClose = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`
@@ -108,6 +108,7 @@ const navItems = [
   { to: '/parent/progress', label: 'Academic Progress', icon: IconProgress },
   { to: '/parent/attendance', label: 'Attendance', icon: IconAttendance },
   { to: '/parent/fees', label: 'Fee Payments', icon: IconFees },
+  { to: '/parent/all-receipts', label: 'All Receipts', icon: IconReceipt },
   { to: '/parent/communication', label: 'Messages', icon: IconCommunication },
 ]
 
@@ -116,6 +117,7 @@ const titleMap = {
   '/parent/progress': 'Academic Progress',
   '/parent/attendance': 'Attendance Record',
   '/parent/fees': 'Fee Payments',
+  '/parent/all-receipts': 'All Receipts',
   '/parent/communication': 'Messages',
 }
 

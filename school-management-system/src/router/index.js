@@ -21,6 +21,7 @@ const routes = [
       { path: 'timetable', name: 'AdminTimetable', component: () => import('@/views/admin/TimetableView.vue') },
       { path: 'fees', name: 'Fees', component: () => import('@/views/admin/FeesView.vue') },
       { path: 'receipt-templates', name: 'ReceiptTemplates', component: () => import('@/views/admin/ReceiptTemplatesView.vue') },
+      { path: 'all-receipts', name: 'AdminAllReceipts', component: () => import('@/views/admin/AllReceiptsView.vue') },
       { path: 'communication', name: 'AdminCommunication', component: () => import('@/views/admin/CommunicationView.vue') },
       { path: 'library', name: 'Library', component: () => import('@/views/admin/LibraryView.vue') },
       { path: 'analytics', name: 'Analytics', component: () => import('@/views/admin/AnalyticsView.vue') },
@@ -70,6 +71,7 @@ const routes = [
       { path: 'progress', name: 'ParentProgress', component: () => import('@/views/parent/ProgressView.vue') },
       { path: 'attendance', name: 'ParentAttendance', component: () => import('@/views/parent/AttendanceView.vue') },
       { path: 'fees', name: 'ParentFees', component: () => import('@/views/parent/FeesView.vue') },
+      { path: 'all-receipts', name: 'ParentAllReceipts', component: () => import('@/views/parent/AllReceiptsView.vue') },
       { path: 'communication', name: 'ParentCommunication', component: () => import('@/views/parent/CommunicationView.vue') },
     ]
   },
