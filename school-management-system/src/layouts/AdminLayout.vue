@@ -124,7 +124,7 @@ import { ref, computed } from 'vue'
 import { useRoute, useRouter, RouterLink, RouterView } from 'vue-router'
 import { useAuthStore } from '@/stores/auth'
 import { useAppStore } from '@/stores/app'
-import { IconDashboard, IconStudents, IconStaff, IconAttendance, IconAcademics, IconTimetable, IconFees, IconCommunication, IconLibrary, IconAnalytics, IconLogout, IconMenu, IconBell } from '@/components/icons'
+import { IconDashboard, IconStudents, IconStaff, IconAttendance, IconAcademics, IconTimetable, IconFees, IconCommunication, IconLibrary, IconAnalytics, IconLogout, IconMenu, IconBell, IconReceipt } from '@/components/icons'
 
 const IconClose = {
   template: `<svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>`
@@ -145,6 +145,7 @@ const navItems = [
   { to: '/admin/academics', label: 'Academics', icon: IconAcademics },
   { to: '/admin/timetable', label: 'Timetable', icon: IconTimetable },
   { to: '/admin/fees', label: 'Fee Management', icon: IconFees },
+  { to: '/admin/receipt-templates', label: 'Receipt Templates', icon: IconReceipt },
   { to: '/admin/communication', label: 'Communication', icon: IconCommunication },
   { to: '/admin/library', label: 'Library', icon: IconLibrary },
   { to: '/admin/analytics', label: 'Analytics', icon: IconAnalytics },
@@ -158,6 +159,7 @@ const titleMap = {
   '/admin/academics': 'Academics & Gradebook',
   '/admin/timetable': 'Timetable',
   '/admin/fees': 'Fee Management',
+  '/admin/receipt-templates': 'Receipt Templates',
   '/admin/communication': 'Communication',
   '/admin/library': 'Library',
   '/admin/analytics': 'Analytics & Reports',

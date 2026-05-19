@@ -20,6 +20,7 @@ const routes = [
       { path: 'academics', name: 'AdminAcademics', component: () => import('@/views/admin/AcademicsView.vue') },
       { path: 'timetable', name: 'AdminTimetable', component: () => import('@/views/admin/TimetableView.vue') },
       { path: 'fees', name: 'Fees', component: () => import('@/views/admin/FeesView.vue') },
+      { path: 'receipt-templates', name: 'ReceiptTemplates', component: () => import('@/views/admin/ReceiptTemplatesView.vue') },
       { path: 'communication', name: 'AdminCommunication', component: () => import('@/views/admin/CommunicationView.vue') },
       { path: 'library', name: 'Library', component: () => import('@/views/admin/LibraryView.vue') },
       { path: 'analytics', name: 'Analytics', component: () => import('@/views/admin/AnalyticsView.vue') },

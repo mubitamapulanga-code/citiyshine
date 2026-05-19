@@ -65,44 +65,69 @@ import ReceiptDocument from './ReceiptDocument.vue'
 const props = defineProps({
   modelValue: Boolean,
   receipt: Object,
+  /** Optionally force a specific template (e.g. from template preview) */
+  initialTemplateId: { type: String, default: null },
 })
 defineEmits(['update:modelValue'])
 
 const receiptStore = useReceiptStore()
 
-// Start with the template the receipt was generated with, fall back to default
-const activeTemplateId = ref(props.receipt?.templateId || receiptStore.defaultTemplate?.id)
+// Resolve starting template: explicit prop > receipt's own template > store default
+const activeTemplateId = ref(
+  props.initialTemplateId ||
+  props.receipt?.templateId ||
+  receiptStore.defaultTemplate?.id
+)
 
-watch(() => props.receipt, (r) => {
-  if (r) activeTemplateId.value = r.templateId || receiptStore.defaultTemplate?.id
-})
+watch(
+  () => [props.receipt, props.initialTemplateId, props.modelValue],
+  ([r, forcedId, open]) => {
+    if (open) {
+      activeTemplateId.value = forcedId || r?.templateId || receiptStore.defaultTemplate?.id
+    }
+  }
+)
 
 const activeTemplate = computed(() =>
   receiptStore.templates.find(t => t.id === activeTemplateId.value) || receiptStore.defaultTemplate
 )
 
+// ── Print ─────────────────────────────────────────────────────────────────────
 function handlePrint() {
   const el = document.getElementById('receipt-print-area')
   if (!el) return
-  const win = window.open('', '_blank', 'width=800,height=900')
-  win.document.write(`
-    <!DOCTYPE html>
-    <html>
-    <head>
-      <title>${props.receipt?.receiptNo || 'Receipt'}</title>
-      <meta charset="utf-8"/>
-      <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', system-ui, sans-serif; background: white; padding: 24px; }
-        @media print { body { padding: 0; } }
-      </style>
-    </head>
-    <body>${el.outerHTML}</body>
-    </html>
-  `)
+
+  // Collect all stylesheet text from the current document so scoped styles are included
+  const styleSheets = Array.from(document.styleSheets)
+  let cssText = ''
+  for (const sheet of styleSheets) {
+    try {
+      const rules = Array.from(sheet.cssRules || [])
+      cssText += rules.map(r => r.cssText).join('\n')
+    } catch {
+      // Cross-origin sheets — skip
+    }
+  }
+
+  const win = window.open('', '_blank', 'width=820,height=960')
+  win.document.write(`<!DOCTYPE html>
+<html>
+<head>
+  <title>${props.receipt?.receiptNo || 'Receipt'}</title>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Inter', system-ui, -apple-system, sans-serif; background: white; padding: 24px; }
+    @media print { body { padding: 0; } @page { margin: 12mm; } }
+    ${cssText}
+  </style>
+</head>
+<body>${el.outerHTML}</body>
+</html>`)
   win.document.close()
   win.focus()
-  setTimeout(() => { win.print(); win.close() }, 400)
+  setTimeout(() => { win.print(); win.close() }, 500)
 }
 </script>
 
