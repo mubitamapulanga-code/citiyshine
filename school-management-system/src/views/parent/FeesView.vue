@@ -1,6 +1,14 @@
 <template>
   <div class="space-y-6">
-    <h2 class="page-title">Fee Payments</h2>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <h2 class="page-title">Fee Payments</h2>
+      <button @click="openGenerateReceipt" class="btn-secondary text-sm flex items-center gap-2 w-fit">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+        </svg>
+        Generate Receipt
+      </button>
+    </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       <div class="stat-card">
@@ -94,6 +102,45 @@
       </div>
     </template>
 
+    <!-- Generate Receipt Modal (standalone) -->
+    <AppModal v-model="showGenReceiptModal" title="Generate Receipt">
+      <form @submit.prevent="submitGenerateReceipt" class="space-y-4">
+        <p class="text-sm text-gray-500">Generate a receipt for an existing payment on your child's account.</p>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Fee Record</label>
+          <select v-model="genForm.feeId" required class="input-field" @change="onGenFeeChange">
+            <option value="" disabled>Select a fee record…</option>
+            <option v-for="f in myFees.filter(f => f.paid > 0)" :key="f.id" :value="f.id">
+              {{ f.feeType }} (Paid: ${{ f.paid.toLocaleString() }})
+            </option>
+          </select>
+        </div>
+        <div v-if="genSelectedFee" class="bg-gray-50 rounded-xl p-4 grid grid-cols-2 gap-3 text-sm">
+          <div><p class="text-xs text-gray-500">Total Fee</p><p class="font-semibold">${{ genSelectedFee.amount.toLocaleString() }}</p></div>
+          <div><p class="text-xs text-gray-500">Amount Paid</p><p class="font-semibold text-green-600">${{ genSelectedFee.paid.toLocaleString() }}</p></div>
+          <div><p class="text-xs text-gray-500">Balance</p><p class="font-semibold" :class="genSelectedFee.balance > 0 ? 'text-red-600' : 'text-gray-400'">${{ genSelectedFee.balance.toLocaleString() }}</p></div>
+          <div><p class="text-xs text-gray-500">Status</p><AppBadge :text="genSelectedFee.status" /></div>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Amount to Show on Receipt</label>
+          <input v-model.number="genForm.amountPaid" type="number" min="1" required class="input-field" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-1">Payment Method</label>
+          <div class="grid grid-cols-2 gap-2">
+            <button v-for="m in methods" :key="m.label" type="button" @click="genForm.method = m.label"
+              :class="['p-3 rounded-xl border-2 text-sm font-medium transition-all flex items-center gap-2', genForm.method === m.label ? 'border-indigo-500 bg-indigo-50 text-indigo-700' : 'border-gray-200 text-gray-600 hover:border-gray-300']">
+              <span>{{ m.icon }}</span> {{ m.label }}
+            </button>
+          </div>
+        </div>
+        <div class="flex gap-3 pt-2">
+          <button type="button" @click="showGenReceiptModal = false" class="btn-secondary flex-1">Cancel</button>
+          <button type="submit" class="btn-primary flex-1">Generate & View Receipt</button>
+        </div>
+      </form>
+    </AppModal>
+
     <!-- Payment Modal -->
     <AppModal v-model="showPay" title="Make Payment">
       <div v-if="selectedFee" class="space-y-4">
@@ -168,6 +215,40 @@ const methods = [
   { label: 'Mobile Money', icon: '📱' },
   { label: 'Cash', icon: '💵' },
 ]
+
+// Generate Receipt (standalone) state
+const showGenReceiptModal = ref(false)
+const genForm = ref({ feeId: '', amountPaid: 0, method: 'Card' })
+const genSelectedFee = computed(() => myFees.value.find(f => f.id === genForm.value.feeId) || null)
+
+function openGenerateReceipt() {
+  genForm.value = { feeId: '', amountPaid: 0, method: 'Card' }
+  showGenReceiptModal.value = true
+}
+
+function onGenFeeChange() {
+  const fee = genSelectedFee.value
+  if (fee) {
+    genForm.value.amountPaid = fee.paid
+    genForm.value.method = fee.method || 'Card'
+  }
+}
+
+function submitGenerateReceipt() {
+  const fee = genSelectedFee.value
+  if (!fee) return
+  const receipt = receiptStore.generateReceipt({
+    feeRecord: fee,
+    amountPaid: genForm.value.amountPaid,
+    method: genForm.value.method,
+    templateId: receiptStore.defaultTemplate?.id,
+    issuedBy: auth.user?.name || 'Parent Portal',
+  })
+  showGenReceiptModal.value = false
+  viewingReceipt.value = receipt
+  showReceiptViewer.value = true
+  activeTab.value = 'receipts'
+}
 
 function openPay(f) {
   selectedFee.value = f
