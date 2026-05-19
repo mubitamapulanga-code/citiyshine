@@ -2,10 +2,10 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 
 const DEMO_USERS = [
-  { id: 1, name: 'Thomas Harris', email: 'admin@school.edu', password: 'admin123', role: 'admin', avatar: 'TH', school: 'Greenfield Academy' },
-  { id: 2, name: 'Dr. Sarah Connor', email: 'teacher@school.edu', password: 'teacher123', role: 'teacher', avatar: 'SC', school: 'Greenfield Academy' },
-  { id: 3, name: 'Alice Johnson', email: 'student@school.edu', password: 'student123', role: 'student', avatar: 'AJ', school: 'Greenfield Academy', studentId: 'STU001' },
-  { id: 4, name: 'Robert Johnson', email: 'parent@school.edu', password: 'parent123', role: 'parent', avatar: 'RJ', school: 'Greenfield Academy', childId: 'STU001', childName: 'Alice Johnson' },
+  { id: 1, name: 'Thomas Harris', email: 'admin@school.edu', password: 'admin123', role: 'admin', avatar: 'TH', school: 'Citybride Academy' },
+  { id: 2, name: 'Dr. Sarah Connor', email: 'teacher@school.edu', password: 'teacher123', role: 'teacher', avatar: 'SC', school: 'Citybride Academy' },
+  { id: 3, name: 'Alice Johnson', email: 'student@school.edu', password: 'student123', role: 'student', avatar: 'AJ', school: 'Citybride Academy', studentId: 'STU001' },
+  { id: 4, name: 'Robert Johnson', email: 'parent@school.edu', password: 'parent123', role: 'parent', avatar: 'RJ', school: 'Citybride Academy', childId: 'STU001', childName: 'Alice Johnson' },
 ]
 
 export const useAuthStore = defineStore('auth', () => {

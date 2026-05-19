@@ -27,7 +27,7 @@ const DEFAULT_TEMPLATES = [
     showLogo: false,
     showSignatureLine: false,
     showWatermark: false,
-    footerText: 'Greenfield Academy — All fees are non-refundable.',
+    footerText: 'Citybride Academy — All fees are non-refundable.',
     headerNote: 'OFFICIAL PAYMENT RECEIPT',
     createdAt: '2026-01-01',
   },
@@ -147,7 +147,7 @@ export const useReceiptStore = defineStore('receipts', () => {
       issuedBy: issuedBy || 'Admin',
       issuedAt: new Date().toISOString(),
       // School info snapshot
-      schoolName: 'Greenfield Academy',
+      schoolName: 'Citybride Academy',
       schoolAddress: '100 Academy Drive, Springfield, ST 12345',
       schoolPhone: '+1-555-0000',
       schoolEmail: 'admin@school.edu',

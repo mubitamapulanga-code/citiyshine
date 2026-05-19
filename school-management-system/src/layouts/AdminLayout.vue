@@ -10,7 +10,7 @@
           </svg>
         </div>
         <div v-if="store.sidebarOpen" class="overflow-hidden">
-          <p class="font-bold text-gray-900 text-sm leading-tight">Greenfield</p>
+          <p class="font-bold text-gray-900 text-sm leading-tight">Citybride</p>
           <p class="text-xs text-gray-500">Academy SMS</p>
         </div>
       </div>

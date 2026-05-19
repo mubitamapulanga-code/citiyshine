@@ -15,7 +15,7 @@
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 14l6.16-3.422a12.083 12.083 0 01.665 6.479A11.952 11.952 0 0012 20.055a11.952 11.952 0 00-6.824-2.998 12.078 12.078 0 01.665-6.479L12 14z" />
           </svg>
         </div>
-        <h1 class="text-3xl font-bold text-white">Greenfield Academy</h1>
+        <h1 class="text-3xl font-bold text-white">Citybride Academy</h1>
         <p class="text-indigo-200 mt-1">School Management System</p>
       </div>
 
@@ -76,7 +76,7 @@
       </div>
 
       <p class="text-center text-indigo-300 text-sm mt-6">
-        © 2026 Greenfield Academy · School Management System v2.0
+        © 2026 Citybride Academy · School Management System v2.0
       </p>
     </div>
   </div>

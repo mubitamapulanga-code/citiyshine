@@ -9,7 +9,7 @@
         </div>
         <div v-if="store.sidebarOpen" class="overflow-hidden">
           <p class="font-bold text-gray-900 text-sm leading-tight">Parent Portal</p>
-          <p class="text-xs text-gray-500">Greenfield Academy</p>
+          <p class="text-xs text-gray-500">Citybride Academy</p>
         </div>
       </div>
       <nav class="flex-1 overflow-y-auto py-4 px-2 space-y-0.5">
